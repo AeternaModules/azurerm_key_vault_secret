@@ -10,20 +10,24 @@ Optional:
     - not_before_date
     - tags
     - value
+    - value_key_vault_id (alternative to value - read from Key Vault instead)
+    - value_key_vault_secret_name (alternative to value - read from Key Vault instead)
     - value_wo
     - value_wo_version
 EOT
 
   type = map(object({
-    key_vault_id     = string
-    name             = string
-    content_type     = optional(string)
-    expiration_date  = optional(string)
-    not_before_date  = optional(string)
-    tags             = optional(map(string))
-    value            = optional(string)
-    value_wo         = optional(string)
-    value_wo_version = optional(number)
+    key_vault_id                = string
+    name                        = string
+    content_type                = optional(string)
+    expiration_date             = optional(string)
+    not_before_date             = optional(string)
+    tags                        = optional(map(string))
+    value                       = optional(string)
+    value_key_vault_id          = optional(string)
+    value_key_vault_secret_name = optional(string)
+    value_wo                    = optional(string)
+    value_wo_version            = optional(number)
   }))
   validation {
     condition = alltrue([
