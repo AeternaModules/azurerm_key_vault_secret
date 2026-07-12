@@ -1,3 +1,7 @@
+output "key_vault_secrets_id" {
+  description = "Map of id values across all key_vault_secrets, keyed the same as var.key_vault_secrets"
+  value       = { for k, v in azurerm_key_vault_secret.key_vault_secrets : k => v.id }
+}
 output "key_vault_secrets_content_type" {
   description = "Map of content_type values across all key_vault_secrets, keyed the same as var.key_vault_secrets"
   value       = { for k, v in azurerm_key_vault_secret.key_vault_secrets : k => v.content_type }
