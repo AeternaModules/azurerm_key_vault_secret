@@ -29,14 +29,6 @@ EOT
     value_wo                    = optional(string)
     value_wo_version            = optional(number)
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.key_vault_secrets : (
-        v.value_wo_version == null || (v.value_wo_version >= 1)
-      )
-    ])
-    error_message = "must be at least 1"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_key_vault_secret's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -49,6 +41,13 @@ EOT
   #   source:    [from keyvault.ValidateNestedItemName: invalid when len(value) > 127]
   # path: name
   #   source:    [from keyvault.ValidateNestedItemName] !regexp.MustCompile(`^[0-9a-zA-Z-]+$`).MatchString(v.(string))
+  # path: key_vault_id
+  #   source:    [from validationFunctionForResourceID] !ok
+  # path: key_vault_id
+  #   source:    [from validationFunctionForResourceID] err != nil
+  # path: value_wo_version
+  #   condition: value >= 1
+  #   message:   must be at least 1
   # path: not_before_date
   #   source:    validation.IsRFC3339Time(...) - no translation rule yet, add one
   # path: expiration_date
